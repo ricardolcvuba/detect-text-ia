@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detector de Texto Generado por IA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f1f3f5;
+    }
+    .header {
+      background-color: #fff;
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+      text-align: center;
+    }
+    .header img {
+      height: 48px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .header .tagline {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 4px;
+    }
+    .container-main {
+      max-width: 700px;
+      margin: 3rem auto;
+    }
+    .card {
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .card-body {
+      padding: 2rem;
+    }
+    h2 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: #495057;
+      margin-bottom: 1.5rem;
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 160px;
+    }
+    #analyzeBtn {
+      background-color: #0069d9;
+      border: none;
+      font-size: 1.1rem;
+      padding: 0.75rem;
+    }
+    #analyzeBtn:hover {
+      background-color: #0056b3;
+    }
+    #resultBox {
+      margin-top: 1rem;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    #resultText {
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <img src="uba_fiuba_logo.png" alt="UBA FIUBA">
+      <img src="fiuba_logo.png" alt="Facultad de Ingeniería" style="height:48px; vertical-align:middle;">
+    </div>
+    <div class="tagline">FACULTAD DE INGENIERÍA</div>
+  </header>
+
+  <div class="container-main">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">Detector de Texto Generado por IA</h2>
+        <p class="subtitle text-center">Ingresa un texto para determinar si fue escrito por un humano o generado por IA</p>
+
+        <div class="mb-3">
+          <label for="inputText" class="form-label fw-semibold">Texto a analizar:</label>
+          <textarea id="inputText" class="form-control" placeholder="Escribe aquí tu texto..."></textarea>
+        </div>
+
+        <div class="d-grid">
+          <button id="analyzeBtn" class="btn btn-primary">Analizar</button>
+        </div>
+
+        <div id="resultBox" class="d-none">
+          <div id="resultText" class="text-danger fw-semibold"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('analyzeBtn').addEventListener('click', async () => {
+      const text = document.getElementById('inputText').value.trim();
+      if (!text) { alert('Por favor, ingresa un texto a analizar.'); return; }
+      try {
+        const res = await fetch('http://127.0.0.1:8000/predict', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ text })
+        });
+        if (!res.ok) throw new Error(res.status);
+        const { prediction } = await res.json();
+        const box = document.getElementById('resultBox');
+        const txt = document.getElementById('resultText');
+        box.classList.remove('d-none');
+        if (prediction === 'AI') {
+          txt.textContent = 'Probablemente generado por IA';
+          txt.classList.replace('text-success','text-danger');
+        } else {
+          txt.textContent = 'Probablemente escrito por un humano';
+          txt.classList.replace('text-danger','text-success');
+        }
+      } catch (e) {
+        console.error(e);
+        alert('Error al comunicarse con el servidor.');
+      }
+    });
+  </script>
+</body>
+</html>
