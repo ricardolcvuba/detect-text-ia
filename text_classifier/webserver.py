@@ -28,8 +28,14 @@ class AITextDetectorServer:
 
 
 if __name__ == "__main__":
+    import os
+
+if __name__ == "__main__":
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8000"))
+
     web_server = AITextDetectorServer(
         model_path="model-RandomForest.joblib",
         vectorizer_path="tfidf_vectorizer.joblib"
     )
-    web_server.run()
+    web_server.run(host=host, port=port)
