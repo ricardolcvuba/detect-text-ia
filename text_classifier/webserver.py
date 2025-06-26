@@ -1,6 +1,7 @@
 import joblib
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 from models import ClassificationResult, TextToClassify, PredictionEnum
 
@@ -8,6 +9,13 @@ from models import ClassificationResult, TextToClassify, PredictionEnum
 class AITextDetectorServer:
     def __init__(self, model_path: str, vectorizer_path: str):
         self.app = FastAPI()
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
         self._load_components(model_path, vectorizer_path)
         self._register_routes()
 
