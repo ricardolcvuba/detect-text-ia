@@ -1,7 +1,10 @@
-import joblib
 import uvicorn
+import joblib
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
+from pathlib import Path
 
 from models import ClassificationResult, TextToClassify, PredictionEnum
 
@@ -16,6 +19,11 @@ class AITextDetectorServer:
             allow_methods=["*"],
             allow_headers=["*"],
         )
+
+        # Configuración para servir archivos estáticos
+        self.base_dir = Path(__file__).parent
+        self.app.mount("/static", StaticFiles(directory=str(self.base_dir / "static")), name="static")
+
         self._load_components(model_path, vectorizer_path)
         self._register_routes()
 
@@ -24,6 +32,10 @@ class AITextDetectorServer:
         self.vectorizer = joblib.load(vectorizer_path)
 
     def _register_routes(self):
+        @self.app.get("/")
+        def index():
+            return FileResponse(self.base_dir / "templates" / "index.html")
+
         @self.app.post("/predict", response_model=ClassificationResult)
         def predict(payload: TextToClassify):
             text_as_vector = self.vectorizer.transform([payload.text])
@@ -38,7 +50,6 @@ class AITextDetectorServer:
 if __name__ == "__main__":
     import os
 
-if __name__ == "__main__":
     host = os.environ.get("HOST", "127.0.0.1")
     port = int(os.environ.get("PORT", "8000"))
 
