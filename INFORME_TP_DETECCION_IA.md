@@ -1,8 +1,8 @@
-# Informe del Trabajo Práctico: Detección de Textos Académicos en Inglés Generados por IA
+# Informe del Trabajo Práctico: Detección de Essays Académicos en Inglés Generados por IA
 
 ## Resumen Ejecutivo
 
-Este trabajo práctico implementa un sistema de clasificación automática para distinguir entre textos académicos largos en inglés escritos por humanos y textos generados por inteligencia artificial. El proyecto utiliza técnicas de procesamiento de lenguaje natural y aprendizaje automático, específicamente un clasificador Random Forest con características TF-IDF, logrando una precisión del 99% en la detección de textos académicos en inglés.
+Este trabajo práctico implementa un sistema de clasificación automática para distinguir entre essays académicos largos en inglés escritos por humanos y essays generados por inteligencia artificial. El proyecto utiliza técnicas de procesamiento de lenguaje natural y aprendizaje automático, específicamente un clasificador Random Forest con características TF-IDF, logrando una precisión del 99% en la detección de essays académicos en inglés.
 
 ## 1. Introducción
 
@@ -12,13 +12,13 @@ El objetivo principal es desarrollar un sistema capaz de identificar automática
 ### 1.2 Motivación
 - **Detección de contenido generado por IA**: Necesidad de identificar contenido sintético en plataformas educativas, medios de comunicación y redes sociales.
 - **Transparencia**: Garantizar que los usuarios puedan distinguir entre contenido humano y generado por máquinas.
-- **Aplicaciones educativas**: Prevenir el uso no autorizado de IA en tareas académicas, especialmente en el contexto de textos académicos en inglés.
+- **Aplicaciones educativas**: Prevenir el uso no autorizado de IA en tareas académicas, especialmente en el contexto de essays académicos en inglés.
 
 ### 1.3 Alcance del Modelo
 El modelo está específicamente diseñado y entrenado para:
-- **Idioma**: Textos en inglés únicamente
-- **Tipo de contenido**: Textos académicos y formales
-- **Longitud**: Textos largos (múltiples párrafos)
+- **Idioma**: Essays en inglés únicamente
+- **Tipo de contenido**: Essays académicos y formales
+- **Longitud**: Essays largos (múltiples párrafos)
 - **Dominio**: Contenido educativo y académico
 
 **Limitaciones importantes**: El modelo no está optimizado para textos cortos, informales, en otros idiomas, o contenido no académico.
@@ -26,10 +26,12 @@ El modelo está específicamente diseñado y entrenado para:
 ## 2. Metodología
 
 ### 2.1 Dataset
-- **Fuente**: Dataset `AI_Human.csv` con 487,235 textos
+- **Fuente**: Dataset "AI vs Human Text" de Kaggle (https://www.kaggle.com/datasets/shanegerami/ai-vs-human-text)
+- **Contenido**: Essays académicos en inglés
+- **Tamaño**: 487,235 essays
 - **Distribución original**:
-  - 37.24% textos generados por IA
-  - 62.76% textos escritos por humanos
+  - 37.24% essays generados por IA
+  - 62.76% essays escritos por humanos
 - **Muestreo balanceado**: Se seleccionaron 10,000 ejemplos de cada clase para evitar sesgos
 
 ### 2.2 Preprocesamiento
@@ -74,8 +76,8 @@ weighted avg       0.99      0.99      0.99      2000
 - **Robustez**: Resultados consistentes en validación cruzada (F1: 0.982)
 
 ### 3.3 Casos de Prueba
-- **Texto 1** (humano): "The use of this technology to great the emotional expressions..." → **Predicción: Humano (0.0)**
-- **Texto 2** (IA): "In a sentence if we are going to use all 3 pronouns..." → **Predicción: IA (1.0)**
+- **Essay 1** (humano): "The use of this technology to great the emotional expressions..." → **Predicción: Humano (0.0)**
+- **Essay 2** (IA): "In a sentence if we are going to use all 3 pronouns..." → **Predicción: IA (1.0)**
 
 ## 4. Implementación del Sistema
 
@@ -120,8 +122,8 @@ detect-text-ia/
 - **Dependencia del dataset**: El modelo puede no generalizar a otros dominios
 - **Evolución de IA**: Los modelos de lenguaje evolucionan constantemente
 - **Contexto cultural**: Puede tener sesgos hacia ciertos estilos de escritura
-- **Alcance lingüístico**: Limitado a textos en inglés únicamente
-- **Tipo de contenido**: Optimizado para textos académicos largos, no para contenido informal o corto
+- **Alcance lingüístico**: Limitado a essays en inglés únicamente
+- **Tipo de contenido**: Optimizado para essays académicos largos, no para contenido informal o corto
 - **Dominio específico**: Puede no funcionar bien en textos técnicos, creativos o periodísticos
 
 ### 5.3 Posibles Mejoras
@@ -139,7 +141,7 @@ detect-text-ia/
 4. **Implementación práctica**: Servidor web funcional
 
 ### 6.2 Impacto y Aplicabilidad
-- **Educación**: Detección de plagio con IA
+- **Educación**: Detección de plagio con IA en essays académicos
 - **Medios**: Verificación de contenido periodístico
 - **Investigación**: Análisis de tendencias en generación de contenido
 - **Empresas**: Control de calidad en plataformas de contenido
