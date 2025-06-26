@@ -1,0 +1,10 @@
+services:
+  ai-text-detector:
+    build: .
+    container_name: ai-text-detector
+    environment:
+      - HOST=${HOST}
+      - PORT=${PORT}
+    ports:
+      - "${PORT}:${PORT}"
+    restart: unless-stopped

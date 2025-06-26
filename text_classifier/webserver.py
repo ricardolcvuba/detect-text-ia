@@ -1,6 +1,7 @@
 import joblib
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 from models import ClassificationResult, TextToClassify, PredictionEnum
 
@@ -8,6 +9,13 @@ from models import ClassificationResult, TextToClassify, PredictionEnum
 class AITextDetectorServer:
     def __init__(self, model_path: str, vectorizer_path: str):
         self.app = FastAPI()
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
         self._load_components(model_path, vectorizer_path)
         self._register_routes()
 
@@ -28,8 +36,14 @@ class AITextDetectorServer:
 
 
 if __name__ == "__main__":
+    import os
+
+if __name__ == "__main__":
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8000"))
+
     web_server = AITextDetectorServer(
         model_path="model-RandomForest.joblib",
         vectorizer_path="tfidf_vectorizer.joblib"
     )
-    web_server.run()
+    web_server.run(host=host, port=port)
