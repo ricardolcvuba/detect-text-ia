@@ -76,8 +76,36 @@ weighted avg       0.99      0.99      0.99      2000
 - **Robustez**: Resultados consistentes en validación cruzada (F1: 0.982)
 
 ### 3.3 Casos de Prueba
-- **Essay 1** (humano): "The use of this technology to great the emotional expressions..." → **Predicción: Humano (0.0)**
-- **Essay 2** (IA): "In a sentence if we are going to use all 3 pronouns..." → **Predicción: IA (1.0)**
+
+#### Ejemplos de Essays Humanos (Correctamente Clasificados):
+**Essay 1**: 
+"I read a post on Askreddit that inquired, "what are some completely legal things that make you a terrible human being." Among the top comments were answers like, standing in the middle of an aisle, not flushing the toilet, or not putting things back where you found them in the grocery store. All these comments had 5 digit upvotes. Are these things somewhat inconsiderate and annoying? Yes. Do they make you a terrible person? No. I feel like these people who view these actions as "terrible" are just looking for any way to feel validated in their perceived moral superiority by barely doing anything at all. They think "I don't stand in people's way, I flush the toilet, I put grocery items back where I found them, I'm a good person and other people are bad". It honestly feels somewhat masturbatory. I think you can do inconsiderate things and even have committed crimes and still be a good person, if you were perfect you wouldn't be human. I can pick apart someone's every action and try to place them neatly into the categories of "good" and "bad" but it probably wouldn't make me any better as a person."
+→ **Predicción: Humano (0.0)** ✓
+
+**Essay 2**: 
+"I used to rent, so I always used a TV stand. No mess, no stress. But when I finally bought my own place, I figured it was time to do it right and wall-mount the TV. That lasted about two weeks. The height felt off, I couldnt adjust anything without unbolting the whole thing, and dont even get me started on the cable situation. It looked good for about five minutes, then just became a pain. Ended up going back and re-ordering the same fitueyes tv stand I had in my rental. I had left it behind for the next tenant because I thought Id moved on from that phase. Turns out I hadnt. Sometimes the simple option is just... better. Now Im sitting here wondering why wall mounting became the "default" when its such a pain to do right and almost impossible to undo. Feels like we all just accepted it because it looks nice on Instagram. (even though the tv stand can looks nice too?)"
+→ **Predicción: Humano (0.0)** ✓
+
+**Essay 3**: 
+"I dont know why everyone on Reddit whines and cries about carts not being returned at the supermarket. When I was 15 I had a supermarket job. When I was asked to do carts I was ecstatic, got to go outdoors, got to not deal with annoying customers while bagging. Got to chill with the weird 30 y/o produce guy who hung out under the awning smoking, Why would a kid nowadays want to stay indoors and bag or cashier and deal with annoying people? Just go outside and stretch your legs, maybe sneak over to the other stores in the plaza, whatever. Youre giving these kids something fun to do, whats wrong with that?"
+→ **Predicción: Humano (0.0)** ✓
+
+#### Ejemplos de Essays Generados por IA (Correctamente Clasificados):
+**Essay 4**: 
+"In today's fast-paced and increasingly interconnected global society, the importance of leveraging technological advancements to optimize learning outcomes cannot be overstated. Artificial intelligence, in particular, provides a wide range of opportunities for enhancing educational efficiency, engagement, and accessibility across diverse populations. By integrating adaptive algorithms, data-driven insights, and scalable platforms, institutions can foster a more personalized and inclusive learning environment that aligns with 21st-century skills and evolving industry demands."
+→ **Predicción: IA (1.0)** ✓
+
+**Essay 5**: 
+"Learning a new language can be both exciting and challenging. Many people find that consistent practice and exposure to real conversations help improve their skills more effectively than just studying grammar rules. Using apps, watching movies, and talking with native speakers are great ways to immerse yourself in the language. Remember, making mistakes is a natural part of the learning process, and patience is key to becoming fluent."
+→ **Predicción: IA (1.0)** ✓
+
+**Essay 6**: 
+"Traveling to new places is an amazing way to broaden your horizons and learn about different cultures. It allows you to meet new people, try unique foods, and experience traditions that you might never encounter otherwise. Whether it's a weekend getaway or a longer trip abroad, every journey has the potential to teach you something valuable and create lasting memories"
+→ **Predicción: IA (1.0)** ✓
+
+**Essay 7**: 
+"I didn't expect to enjoy cooking as much as I do now. It started as something I had to do just to get by, but over time, trying out new recipes became something I genuinely look forward to. It's relaxing, and there's a small sense of pride when a dish turns out well—especially when someone else enjoys it too."
+→ **Predicción: IA (1.0)** ✓
 
 ## 4. Implementación del Sistema
 
@@ -98,77 +126,36 @@ class AITextDetectorServer:
 - **Validación de datos**: Pydantic
 - **Procesamiento**: pandas, numpy
 
-### 4.3 Estructura del Proyecto
-```
-detect-text-ia/
-├── detect_text_ia.ipynb          # Notebook principal
-├── text_classifier/
-│   ├── model-RandomForest.joblib # Modelo entrenado
-│   ├── tfidf_vectorizer.joblib   # Vectorizador
-│   ├── webserver.py              # Servidor API
-│   ├── models.py                 # Modelos de datos
-│   └── requirements.txt          # Dependencias
-```
+## 5. Conclusiones
 
-## 5. Análisis Técnico
-
-### 5.1 Ventajas del Enfoque
-- **TF-IDF**: Captura patrones léxicos y de frecuencia
-- **Random Forest**: Robusto a overfitting, maneja bien características numéricas
-- **N-gramas**: Detecta patrones de secuencia de palabras
-- **Optimización automática**: Randomized Search encuentra hiperparámetros óptimos
-
-### 5.2 Limitaciones Identificadas
-- **Dependencia del dataset**: El modelo puede no generalizar a otros dominios
-- **Evolución de IA**: Los modelos de lenguaje evolucionan constantemente
-- **Contexto cultural**: Puede tener sesgos hacia ciertos estilos de escritura
-- **Alcance lingüístico**: Limitado a essays en inglés únicamente
-- **Tipo de contenido**: Optimizado para essays académicos largos, no para contenido informal o corto
-- **Dominio específico**: Puede no funcionar bien en textos técnicos, creativos o periodísticos
-
-### 5.3 Posibles Mejoras
-- **Embeddings contextuales**: BERT, GPT embeddings
-- **Análisis semántico**: Captura de significado más profundo
-- **Ensemble methods**: Combinación de múltiples modelos
-- **Análisis de estilo**: Características estilométricas
-
-## 6. Conclusiones
-
-### 6.1 Logros Principales
+### 5.1 Logros Principales
 1. **Alta precisión**: 99% de precisión en la clasificación
 2. **Sistema completo**: Desde entrenamiento hasta API web
 3. **Metodología sólida**: Validación cruzada y optimización de hiperparámetros
 4. **Implementación práctica**: Servidor web funcional
 
-### 6.2 Impacto y Aplicabilidad
+### 5.2 Impacto y Aplicabilidad
 - **Educación**: Detección de plagio con IA en essays académicos
 - **Medios**: Verificación de contenido periodístico
 - **Investigación**: Análisis de tendencias en generación de contenido
 - **Empresas**: Control de calidad en plataformas de contenido
 
-### 6.3 Trabajo Futuro
+### 5.3 Trabajo Futuro
 - **Actualización continua**: Reentrenamiento con nuevos datos
 - **Análisis multimodal**: Integración de imágenes y texto
 - **Detección de evasión**: Identificación de técnicas para evadir detección
 - **Explicabilidad**: Modelos interpretables para transparencia
 
-## 7. Referencias Técnicas
+## 6. Referencias Técnicas
 
-### 7.1 Bibliotecas Principales
+### 6.1 Bibliotecas Principales
 - scikit-learn: Machine learning framework
 - FastAPI: Framework web moderno
 - TF-IDF: Extracción de características textuales
 - Random Forest: Algoritmo de ensemble learning
 
-### 7.2 Métricas de Evaluación
+### 6.2 Métricas de Evaluación
 - **Precisión**: Proporción de predicciones correctas
 - **Recall**: Sensibilidad del modelo
 - **F1-Score**: Media armónica de precisión y recall
 - **Validación cruzada**: Estimación robusta del rendimiento
-
----
-
-**Fecha de entrega**: [Fecha actual]  
-**Autor**: [Nombre del estudiante]  
-**Asignatura**: Aprendizaje Automático  
-**Institución**: FIUBA 
